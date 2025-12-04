@@ -16,16 +16,20 @@ app.use(
 app.use("/api/auth", auth);
 app.use("/api/lists", addList);
 
+// Connect to database
 connectDB();
 
-const port = process.env.PORT || 1000;
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
-
+// Root route
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+// Only start server in development (not in Vercel serverless)
+if (process.env.NODE_ENV !== "production") {
+  const port = process.env.PORT || 1000;
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}
 
 module.exports = app;
